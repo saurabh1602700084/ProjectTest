@@ -1,0 +1,44 @@
+﻿@model List<ProjectTest.Models.tblEmployee1>
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>Show</h2>
+
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">City</th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    
+   
+    <tbody>
+        @foreach (var obj in Model)
+        {
+
+           
+        <tr>
+            <th scope="row">1</th>
+            <td>@obj.Name</td>
+            <td>@obj.Gender</td>
+            <td>@obj.city</td>
+            <td><a href="@Url.Action("Delete",new{@obj.EmployeeID})" class="btn-danger">Delete</a>
+                <a href="@Url.Action("Index",new{@obj.EmployeeID,@obj.Name,@obj.Gender,@obj.city})" class="btn-danger">Edit</a>
+            </td>
+            
+        </tr>
+       
+        }
+    </tbody>
+ </table>
+   
+
+

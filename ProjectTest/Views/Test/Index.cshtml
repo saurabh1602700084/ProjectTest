@@ -1,0 +1,27 @@
+﻿@model ProjectTest.Models.tblEmployee1
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "Test", FormMethod.Post))
+{
+    @Html.HiddenFor(x=>x.EmployeeID)
+    <div class="form-group">
+        <label for="Name">Name</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+   
+    <div class="form-group">
+        <label>Gender</label>
+        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                   { new SelectListItem{Text="Male", Value="M"},
+                     new SelectListItem{Text="Female", Value="F"}}, "Please select")
+    </div>
+    <div class="form-group">
+        <label for="Name">City</label>
+        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+    </div>
+<input type="submit" value="submit" />
+}
+
