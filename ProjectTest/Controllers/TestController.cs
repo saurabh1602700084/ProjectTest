@@ -19,9 +19,11 @@ namespace ProjectTest.Controllers
                 ep.Name = emp.Name;
                 ep.Gender = emp.Gender;
                 ep.city = emp.city;
+                List<tblEmployee1> res = objt.tblEmployee1.ToList();
+                ViewBag.EmpList = res;
                 return View(ep);
             }
-            
+           
             return View();
         }
         [HttpPost]
@@ -29,31 +31,79 @@ namespace ProjectTest.Controllers
         public ActionResult AddStudent(tblEmployee1 emp)
         {
             tblEmployee1 ep = new tblEmployee1();
-            if (ModelState.IsValid)
+
+            if (emp.EmployeeID==0)
             {
-                ep.Name = emp.Name;
-                ep.Gender = emp.Gender;
-                ep.city = emp.city;
+                if (ModelState.IsValid)
+                {
+                    ep.Name = emp.Name;
+                    ep.Gender = emp.Gender;
+                    ep.city = emp.city;
+                    ep.EmployeeID = emp.EmployeeID;
+                }
+
+                objt.tblEmployee1.Add(ep);
+                objt.SaveChanges();
+
+                
             }
-            objt.tblEmployee1.Add(ep);
-            objt.SaveChanges();
-            
-                return View();
+            else
+            {
+                var emp2 = objt.tblEmployee1.Where(m => m.EmployeeID == emp.EmployeeID).FirstOrDefault();
+                emp2.Name = emp.Name;
+                emp2.Gender = emp.Gender;
+                emp2.city = emp.city;
+                emp2.EmployeeID = emp.EmployeeID;
+
+                objt.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            return View();
         }
 
         public ActionResult Show()
         {
-            List<tblEmployee1> res = new List<tblEmployee1>();
-             res = objt.tblEmployee1.ToList();
-            return View(res);
+             List<tblEmployee1> res = new List<tblEmployee1>();
+            res = objt.tblEmployee1.ToList();
+           // ViewBag.EmpList = res;
+            return RedirectToAction("Index");
+            // return View();
         }
 
-        public ActionResult Delete(int EmployeeID)
+        [HttpPost]
+        public ActionResult Edit(string EmployeeID)
         {
-            var res = objt.tblEmployee1.Where(x => x.EmployeeID == EmployeeID).FirstOrDefault();
+            var emp2 = objt.tblEmployee1.Where(x => x.EmployeeID.ToString() ==EmployeeID).FirstOrDefault();
+           
+
+               objt.SaveChanges();
+            //return RedirectToAction("Show");
+            return PartialView("Edit", emp2);
+        }
+
+
+
+        public ActionResult Delete(string EmployeeID)
+        {
+            var res = objt.tblEmployee1.Where(x => x.EmployeeID.ToString() == EmployeeID).FirstOrDefault();
             objt.tblEmployee1.Remove(res);
             objt.SaveChanges();
             return RedirectToAction("Show");
         }
+
+        public ActionResult Details(string EmployeeID)
+        {
+            var res1 = objt.tblEmployee1.Where(x => x.EmployeeID.ToString() == EmployeeID).FirstOrDefault();
+            return PartialView("Details",res1);
+        }
+
+        //public JsonResult Details(string EmployeeID)
+        //{
+        //    var res1 = objt.tblEmployee1.Where(x => x.EmployeeID.ToString() == EmployeeID).FirstOrDefault();
+        //    return Json(res1, JsonRequestBehavior.AllowGet);
+
+        //}
+
     }
 }

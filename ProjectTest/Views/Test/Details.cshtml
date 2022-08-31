@@ -1,0 +1,28 @@
+﻿@model ProjectTest.Models.tblEmployee1
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+
+        <td>
+            <div class="form-group">
+                <label for="Name">Name</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+
+        </td>
+        <td>
+            <div class="form-group">
+                <label for="Name">Gender</label>
+                @Html.TextBoxFor(m => m.Gender, new { @class = "form-control" })
+            </div>
+
+        </td>
+        <td>
+            <div class="form-group">
+                <label for="Name">City</label>
+                @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+            </div>
+
+        </td>
+    </tr>
+</table>

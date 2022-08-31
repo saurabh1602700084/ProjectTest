@@ -1,5 +1,6 @@
 ﻿@model List<ProjectTest.Models.tblEmployee1>
 
+
 @{
     ViewBag.Title = "Show";
 }
@@ -7,7 +8,7 @@
 <h2>Show</h2>
 
 
-<table class="table table-dark">
+<table class="table table-dark grid" id="CustomeGrid">
     <thead>
         <tr>
             <th scope="col">S.No</th>
@@ -18,27 +19,85 @@
 
         </tr>
     </thead>
-    
-   
+
+
     <tbody>
         @foreach (var obj in Model)
         {
 
-           
-        <tr>
-            <th scope="row">1</th>
-            <td>@obj.Name</td>
-            <td>@obj.Gender</td>
-            <td>@obj.city</td>
-            <td><a href="@Url.Action("Delete",new{@obj.EmployeeID})" class="btn-danger">Delete</a>
-                <a href="@Url.Action("Index",new{@obj.EmployeeID,@obj.Name,@obj.Gender,@obj.city})" class="btn-danger">Edit</a>
-            </td>
-            
-        </tr>
-       
+
+            <tr>
+                <td>@obj.EmployeeID</td>
+                <td>@obj.Name</td>
+                <td>@obj.Gender</td>
+                <td>@obj.city</td>
+                <td>
+                    <a href="@Url.Action("Delete",new{@obj.EmployeeID})" class="btn-danger">Delete</a>
+                    <a href="@Url.Action("Index",new{@obj.EmployeeID})" class="btn-danger">Edit</a>
+
+                    @*<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Edit Record</a>*@
+                    <a href="@Url.Action("Details",new{@obj.EmployeeID})" class="details">View</a>
+                    @*<a href="#" class="btn btn-danger" onclick="AddNewStudent(@obj.EmployeeID)">View</a>*@
+                </td>
+
+            </tr>
+
         }
     </tbody>
- </table>
+</table>
+<div id="myModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Customer Details Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="SaveRecord">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />*@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#CustomeGrid .details").click(function () {
+            var customerId = $(this).closest("tr").find("td").eq(0).html();
+            var name = $(this).closest("tr").find("td").eq(1).html();
+            var gender = $(this).closest("tr").find("td").eq(2).html();
+             var city= $(this).closest("tr").find("td").eq(3).html();
+            $.ajax({
+                type: "POST",
+                url: "/Test/Edit",
+                data: '{EmployeeID: "' + customerId + '"  }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $("#myModal").find(".modal-body").html(response);
+                    $("#myModal").modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+  
    
-
-
+</script>
